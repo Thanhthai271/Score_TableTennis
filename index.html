@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ứng Dụng Tính Điểm & Xếp Hạng</title>
+    <style>
+        /* ==================== CSS STYLES ==================== */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f7f6;
+            color: #333;
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #007bff;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 5px;
+            margin-top: 0;
+        }
+        /* --- Form Style --- */
+        .input-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr 0.5fr 0.5fr;
+            gap: 15px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            background-color: #e9f7ff;
+        }
+        .input-form input, .input-form select, .input-form button {
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+        .input-form button {
+            grid-column: span 2;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .input-form button:hover {
+            background-color: #218838;
+        }
+
+        /* --- Table Style (Rankings) --- */
+        #ranking-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        #ranking-table th, #ranking-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: center;
+        }
+        #ranking-table th {
+            background-color: #007bff;
+            color: white;
+            text-transform: uppercase;
+        }
+        #ranking-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .rank-A0 { background-color: #ffda79; font-weight: bold; }
+        .rank-A1, .rank-A2 { background-color: #ffe0b2; }
+        .rank-B1, .rank-B2 { background-color: #e6e6fa; }
+        .rank-C1, .rank-C2 { background-color: #e0ffff; }
+        .rank-D1, .rank-D2 { background-color: #f0f8ff; }
+
+        /* Helper Styles */
+        .text-center { text-align: center; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2 class="text-center">Ứng Dụng Tính Điểm Giải Đấu</h2>
+        
+        <div class="input-form">
+            <select id="player1" required></select>
+            <select id="player2" required></select>
+            <input type="number" id="set1" min="0" max="3" placeholder="Set P1" required>
+            <input type="number" id="set2" min="0" max="3" placeholder="Set P2" required>
+            <button onclick="submitMatchResult()">CẬP NHẬT KẾT QUẢ</button>
+        </div>
+
+        <h2>Bảng Xếp Hạng</h2>
+        <table id="ranking-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Tên Người Chơi</th>
+                    <th>Hạng</th>
+                    <th>Điểm</th>
+                    <th>Trận Đấu</th>
+                </tr>
+            </thead>
+            <tbody id="ranking-body">
+                </tbody>
+        </table>
+    </div>
+
+    <script>
+        // ===================================================================
+        // 6. JAVASCRIPT LOGIC (Đã tích hợp phần Server-side)
+        // ===================================================================
+
+        // 1. CẤU HÌNH HỆ THỐNG ĐIỂM VÀ HẠNG
+        const SCORE_MAP = {
+            '3-0': 15,
+            '3-1': 10,
+            '3-2': 5
+        };
+
+        const RANK_CONFIG = {
+            BASE_POINT: 40,
+            POINT_STEP: 60,
+            RANKS: ['E', 'D2', 'D1', 'C2', 'C1', 'B2', 'B1', 'A2', 'A1', 'A0']
+        };
+
+        // Dữ liệu ban đầu (Mô phỏng Database)
+        let playersData = [
+            { id: 1, name: 'Anh A', total_points: 150, match_played: 0, rank: 'E' },
+            { id: 2, name: 'Anh B', total_points: 200, match_played: 0, rank: 'E' },
+            { id: 3, name: 'Anh C', total_points: 300, match_played: 0, rank: 'E' },
+            { id: 4, name: 'Anh D', total_points: 50, match_played: 0, rank: 'E' },
+            { id: 5, name: 'Chị E', total_points: 400, match_played: 0, rank: 'E' }
+        ];
+
+        // --- HÀM LOGIC TÍNH ĐIỂM ---
+        function calculateRankingPoints(setA, setB) {
+            let pointsA = 0;
+            let pointsB = 0;
+            
+            if (setA !== 3 && setB !== 3) {
+                return { pointsA: 0, pointsB: 0, error: "Tỉ số không hợp lệ." };
+            }
+            if (setA === setB) {
+                return { pointsA: 0, pointsB: 0, error: "Tỉ số không hợp lệ." };
+            }
+            
+            let key;
+            if (setA > setB) { // A thắng
+                key = `${setA}-${setB}`;
+                const points = SCORE_MAP[key];
+                pointsA = points;
+                pointsB = -points;
+            } else if (setB > setA) { // B thắng
+                key = `${setB}-${setA}`;
+                const points = SCORE_MAP[key];
+                pointsB = points;
+                pointsA = -points;
+            }
+            
+            return { pointsA, pointsB };
+        }
+
+        // --- HÀM LOGIC PHÂN HẠNG ---
+        function determinePlayerRank(totalPoints) {
+            const { BASE_POINT, POINT_STEP, RANKS } = RANK_CONFIG;
+            
+            if (totalPoints < BASE_POINT) {
+                return RANKS[0]; 
+            }
+
+            let rankIndex = Math.floor((totalPoints - BASE_POINT) / POINT_STEP);
+            
+            if (rankIndex >= RANKS.length - 1) {
+                return RANKS[RANKS.length - 1]; 
+            }
+            
+            return RANKS[rankIndex];
+        }
+
+        // --- HÀM API/DB MÔ PHỎNG (Sử dụng Fetch giả lập) ---
+
+        /**
+         * Mô phỏng hàm Fetch API gửi kết quả trận đấu tới Server
+         * Trong môi trường thực tế, phần này sẽ là lệnh fetch('/api/update-score', { method: 'POST', body: data })
+         */
+        async function mockFetchUpdateScore(p1_name, p2_name, set1, set2) {
+            
+            // 1. Tìm ID người chơi (Mô phỏng DB Query)
+            const p1_index = playersData.findIndex(p => p.name === p1_name);
+            const p2_index = playersData.findIndex(p => p.name === p2_name);
+        
+            if (p1_index === -1 || p2_index === -1) {
+                return { success: false, message: "Không tìm thấy người chơi." };
+            }
+
+            // Đảm bảo không đấu với chính mình
+            if (p1_index === p2_index) {
+                 return { success: false, message: "Không thể đấu với chính mình." };
+            }
+        
+            // 2. Tính toán điểm cộng/trừ
+            const result = calculateRankingPoints(set1, set2);
+
+            if (result.error) {
+                 return { success: false, message: "Tỉ số không hợp lệ (Phải là 3-x hoặc x-3)." };
+            }
+
+            const { pointsA, pointsB } = result;
+
+            // 3. Cập nhật điểm vào DB mô phỏng
+            playersData[p1_index].total_points += pointsA;
+            playersData[p2_index].total_points += pointsB;
+            playersData[p1_index].match_played += 1;
+            playersData[p2_index].match_played += 1;
+
+            // 4. Cập nhật hạng
+            playersData[p1_index].rank = determinePlayerRank(playersData[p1_index].total_points);
+            playersData[p2_index].rank = determinePlayerRank(playersData[p2_index].total_points);
+
+            return { 
+                success: true, 
+                message: "Cập nhật thành công!", 
+                p1_points: pointsA, 
+                p2_points: pointsB 
+            };
+        }
+
+
+        // --- FRONT-END FUNCTIONS ---
+        
+        /**
+         * Xử lý sự kiện bấm nút Submit
+         */
+        async function submitMatchResult() {
+            const p1_name = document.getElementById('player1').value;
+            const p2_name = document.getElementById('player2').value;
+            const set1 = parseInt(document.getElementById('set1').value);
+            const set2 = parseInt(document.getElementById('set2').value);
+
+            if (!p1_name || !p2_name || isNaN(set1) || isNaN(set2)) {
+                alert("Vui lòng nhập đầy đủ và hợp lệ thông tin trận đấu.");
+                return;
+            }
+
+            // Bắt đầu mô phỏng Fetch
+            const response = await mockFetchUpdateScore(p1_name, p2_name, set1, set2);
+
+            if (response.success) {
+                alert(`Cập nhật thành công! 
+                    ${p1_name}: ${response.p1_points > 0 ? '+' : ''}${response.p1_points} điểm.
+                    ${p2_name}: ${response.p2_points > 0 ? '+' : ''}${response.p2_points} điểm.`);
+                renderRankings(); // Vẽ lại bảng
+                document.getElementById('set1').value = '';
+                document.getElementById('set2').value = '';
+            } else {
+                alert(`Lỗi: ${response.message}`);
+            }
+        }
+
+        /**
+         * Vẽ bảng xếp hạng
+         */
+        function renderRankings() {
+            const body = document.getElementById('ranking-body');
+            body.innerHTML = '';
+            
+            // Sắp xếp người chơi theo total_points giảm dần
+            const sortedPlayers = [...playersData].sort((a, b) => b.total_points - a.total_points);
+
+            sortedPlayers.forEach((p, index) => {
+                const row = body.insertRow();
+                row.className = `rank-${p.rank.replace('2', '').replace('1', '').replace('0', '')}`; // Gắn class theo hạng để tô màu
+                
+                row.insertCell().textContent = index + 1;
+                row.insertCell().textContent = p.name;
+                row.insertCell().textContent = p.rank;
+                row.insertCell().textContent = p.total_points;
+                row.insertCell().textContent = p.match_played;
+            });
+        }
+
+        /**
+         * Điền dữ liệu người chơi vào các ô select
+         */
+        function populatePlayers() {
+            const player1Select = document.getElementById('player1');
+            const player2Select = document.getElementById('player2');
+            
+            const initialOption = (name) => {
+                const opt = document.createElement('option');
+                opt.value = "";
+                opt.textContent = `--- Chọn ${name} ---`;
+                opt.disabled = true;
+                opt.selected = true;
+                return opt;
+            }
+
+            player1Select.appendChild(initialOption("Người chơi 1"));
+            player2Select.appendChild(initialOption("Người chơi 2"));
+
+            playersData.forEach(p => {
+                const opt1 = document.createElement('option');
+                opt1.value = p.name;
+                opt1.textContent = p.name;
+                player1Select.appendChild(opt1);
+
+                const opt2 = document.createElement('option');
+                opt2.value = p.name;
+                opt2.textContent = p.name;
+                player2Select.appendChild(opt2);
+            });
+        }
+
+
+        // ===================================================================
+        // 7. KHỞI TẠO ỨNG DỤNG
+        // ===================================================================
+
+        window.onload = () => {
+             // Cập nhật hạng ban đầu cho dữ liệu mẫu
+            playersData.forEach(p => {
+                p.rank = determinePlayerRank(p.total_points);
+            });
+            populatePlayers();
+            renderRankings();
+        };
+
+    </script>
+
+</body>
+</html>

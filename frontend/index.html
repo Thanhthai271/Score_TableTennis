@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Hệ Thống Quản Lý Xếp Hạng Bóng Bàn</title>
+</head>
+<body>
+
+    <header>
+        <h1>🏆 Hệ Thống Quản Lý Xếp Hạng Bóng Bàn</h1>
+    </header>
+
+    <main>
+        
+        <section class="card update-match-section">
+            <h2>🔁 Cập Nhật Kết Quả Trận Đấu</h2>
+            <form id="updateMatchForm">
+                <div class="input-group">
+                    <label for="p1Name">Tên Người Chơi 1:</label>
+                    <input type="text" id="p1Name" list="playerNames" required placeholder="Tên người chơi 1">
+                </div>
+                <div class="input-group">
+                    <label for="p2Name">Tên Người Chơi 2:</label>
+                    <input type="text" id="p2Name" list="playerNames" required placeholder="Tên người chơi 2">
+                </div>
+                <div class="input-group score-inputs">
+                    <label>Tỷ số (Set):</label>
+                    <input type="number" id="set1" required min="0" max="3" value="3" placeholder="Set P1">
+                    <span>-</span>
+                    <input type="number" id="set2" required min="0" max="3" value="0" placeholder="Set P2">
+                </div>
+                <button type="submit" class="btn btn-secondary">Cập Nhật</button>
+            </form>
+            
+            <datalist id="playerNames"></datalist>
+        </section>
+
+        <section class="card ranking-section">
+            <h2>📊 Xếp Hạng Người Chơi</h2>
+            
+            <button id="toggleAddPlayerForm" class="btn btn-primary">
+                ➕ Thêm Vận Động Viên
+            </button>
+
+            <div id="addPlayerFormContainer" style="display: none; margin-top: 20px;">
+                <form id="addPlayerForm">
+                    <h3>Thông tin VĐV mới</h3>
+                    <div class="input-group">
+                        <label for="newPlayerName">Tên người chơi:</label>
+                        <input type="text" id="newPlayerName" required placeholder="Nhập tên người chơi">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="newPlayerPoints">Tổng Điểm:</label>
+                        <input type="number" id="newPlayerPoints" required min="0" value="0" placeholder="Điểm khởi tạo">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="newPlayerPhone">Số điện thoại:</label>
+                        <input type="text" id="newPlayerPhone" placeholder="SĐT (Tùy chọn)">
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Tạo Người Chơi</button>
+                    <button type="button" id="cancelAddPlayer" class="btn btn-danger">Hủy</button>
+                </form>
+            </div>
+            
+            <div class="ranking-table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Tên</th>
+                            <th>Hạng</th>
+                            <th>Tổng Điểm</th>
+                            <th>Số điện thoại</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="rankingBody">
+                        </tbody>
+                </table>
+            </div>
+        </section>
+        
+        <div id="messageBox" class="message-box"></div>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Hệ thống Quản Lý Bóng Bàn</p>
+    </footer>
+
+    <script src="./api/index.js"></script> 
+</body>
+</html>

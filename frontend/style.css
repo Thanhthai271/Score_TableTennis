@@ -1,0 +1,233 @@
+/* style.css */
+:root {
+    --primary-color: #007bff; /* Xanh dương chính */
+    --secondary-color: #28a745; /* Xanh lá (Cập nhật) */
+    --danger-color: #dc3545; /* Đỏ (Hủy/Xóa) */
+    --background-color: #f4f7f6;
+    --card-background: #ffffff;
+    --text-color: #333;
+    --success-color: #28a745;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    margin: 0;
+    line-height: 1.6;
+}
+
+header {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 25px 0;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2.2em;
+    font-weight: 700;
+}
+
+/* MAIN LAYOUT (Sử dụng Grid cho responsive) */
+main {
+    max-width: 1400px;
+    margin: 30px auto;
+    padding: 0 20px;
+    display: grid;
+    /* Xếp 3 cột trên màn hình lớn */
+    grid-template-columns: 1fr 2fr; 
+    gap: 30px;
+}
+
+/* Đảm bảo Form Cập Nhật và Form Thêm VĐV nằm ở cột hẹp hơn (cột 1) */
+.update-match-section {
+    grid-column: 1 / 2;
+}
+
+/* Đảm bảo Bảng xếp hạng chiếm hết phần còn lại (cột 2) */
+.ranking-section {
+    grid-column: 2 / 3;
+}
+
+
+/* Cấu trúc Card chung */
+.card {
+    background-color: var(--card-background);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); /* Shadow nhẹ, hiện đại */
+}
+
+.card h2 {
+    margin-top: 0;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+    font-size: 1.5em;
+    color: var(--primary-color);
+}
+
+/* Input Groups */
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 1em;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.input-group input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+    outline: none;
+}
+
+.score-inputs {
+    display: flex;
+    align-items: center;
+}
+
+.score-inputs input {
+    width: 50px;
+    text-align: center;
+    margin: 0 10px;
+}
+
+/* Buttons */
+.btn {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 600;
+    margin-right: 10px;
+    transition: opacity 0.3s, background-color 0.3s;
+}
+
+.btn:hover {
+    opacity: 0.9;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.btn-secondary {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+.btn-danger {
+    background-color: var(--danger-color);
+    color: white;
+}
+
+.edit-btn, .delete-btn {
+    padding: 8px 12px;
+    font-size: 0.9em;
+    margin-left: 5px;
+}
+
+.delete-btn {
+    background-color: var(--danger-color);
+    color: white;
+}
+
+/* Ranking Table */
+.ranking-table-container {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: separate; /* Dùng separate để làm tròn góc */
+    border-spacing: 0;
+    margin-top: 25px;
+    border-radius: 10px;
+    overflow: hidden; /* Cần thiết để làm tròn góc */
+}
+
+table thead th:first-child { border-top-left-radius: 10px; }
+table thead th:last-child { border-top-right-radius: 10px; }
+
+table th, table td {
+    padding: 15px;
+    text-align: left;
+}
+
+table th {
+    background-color: var(--primary-color);
+    color: white;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.85em;
+}
+
+table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+table tbody tr:hover {
+    background-color: #f0f0f0;
+    transition: background-color 0.2s;
+}
+
+/* Message Box */
+.message-box {
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 20px;
+    text-align: center;
+    font-weight: bold;
+    display: none; 
+}
+
+.message-box.success {
+    background-color: #d4edda;
+    color: var(--success-color);
+    border: 1px solid #c3e6cb;
+}
+
+.message-box.error {
+    background-color: #f8d7da;
+    color: var(--danger-color);
+    border: 1px solid #f5c6cb;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 20px;
+    margin-top: 40px;
+    color: #666;
+    font-size: 0.9em;
+    background-color: var(--card-background);
+    border-top: 1px solid #eee;
+}
+
+/* Media Queries cho Responsive */
+@media (max-width: 992px) {
+    main {
+        grid-template-columns: 1fr; /* Xếp chồng trên màn hình nhỏ */
+    }
+
+    .ranking-section, .update-match-section {
+        grid-column: 1 / 2; /* Đảm bảo cả hai chiếm hết 1 cột */
+    }
+}

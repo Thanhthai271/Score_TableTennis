@@ -1,0 +1,30 @@
+{
+  "name": "t",
+  "version": "1.0.0",
+  "description": "Score-TableTenis",
+  "main": "server.ts",
+  "scripts": {
+    "start": "ts-node src/server.ts",
+    "dev": "tsx watch src/server.ts",
+    "test": "STT"
+  },
+  "keywords": [
+    "STT"
+  ],
+  "author": "T",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^4.19.2",
+    "mongoose": "^9.0.1"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.12.12",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.21.0",
+    "typescript": "^5.4.5"
+  }
+}
