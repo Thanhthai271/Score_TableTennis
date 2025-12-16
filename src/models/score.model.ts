@@ -23,7 +23,7 @@ const PlayerSchema: Schema = new Schema({
     },
     rank: { 
         type: String, 
-        required: true, 
+        required: false, 
         default: 'E' 
     },
     phone_number: {

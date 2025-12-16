@@ -1,18 +1,23 @@
-// src/routes/score.route.ts
+// src/routes/score.route.ts (ĐÃ KIỂM TRA)
 
 import express from 'express';
-import { getRankings, updateMatchResult, createPlayer, deletePlayer } from '../controller/score.controller'; 
+import { 
+    getRankings, 
+    updateMatchResult, 
+    createPlayer, 
+    deletePlayer,
+    getPlayerById, 
+    updatePlayerDetails 
+} from '../controller/score.controller'; // <--- ĐẢM BẢO ĐƯỜNG DẪN NÀY LÀ CHÍNH XÁC
 
 const scoreRouter = express.Router();
 
-// Lấy bảng xếp hạng
 scoreRouter.get('/', getRankings);
-
-// Gửi kết quả trận đấu để cập nhật điểm
 scoreRouter.post('/update', updateMatchResult);
+scoreRouter.post('/create', createPlayer);
+scoreRouter.delete('/delete', deletePlayer);
 
-scoreRouter.post('/create', createPlayer)
-
-scoreRouter.delete('/delete', deletePlayer)
+scoreRouter.get('/id/:id', getPlayerById);
+scoreRouter.patch('/id/:id', updatePlayerDetails);
 
 export default scoreRouter;

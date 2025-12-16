@@ -1,101 +1,146 @@
-/* style.css */
-:root {
-    --primary-color: #007bff; /* Xanh dương chính */
-    --secondary-color: #28a745; /* Xanh lá (Cập nhật) */
-    --danger-color: #dc3545; /* Đỏ (Hủy/Xóa) */
-    --background-color: #f4f7f6;
-    --card-background: #ffffff;
-    --text-color: #333;
-    --success-color: #28a745;
-}
+/* style.css (ĐÃ CẬP NHẬT TỶ LỆ CỘT) */
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: var(--background-color);
-    color: var(--text-color);
     margin: 0;
-    line-height: 1.6;
+    padding: 0;
+    background-color: #f4f7f6;
+    color: #333;
 }
 
 header {
-    background-color: var(--primary-color);
+    background-color: #007bff;
     color: white;
-    padding: 25px 0;
+    padding: 20px;
     text-align: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-header h1 {
-    margin: 0;
-    font-size: 2.2em;
-    font-weight: 700;
-}
-
-/* MAIN LAYOUT (Sử dụng Grid cho responsive) */
 main {
-    max-width: 1400px;
-    margin: 30px auto;
-    padding: 0 20px;
-    display: grid;
-    /* Xếp 3 cột trên màn hình lớn */
-    grid-template-columns: 1fr 2fr; 
+    display: flex;
+    justify-content: center;
     gap: 30px;
-}
-
-/* Đảm bảo Form Cập Nhật và Form Thêm VĐV nằm ở cột hẹp hơn (cột 1) */
-.update-match-section {
-    grid-column: 1 / 2;
-}
-
-/* Đảm bảo Bảng xếp hạng chiếm hết phần còn lại (cột 2) */
-.ranking-section {
-    grid-column: 2 / 3;
-}
-
-
-/* Cấu trúc Card chung */
-.card {
-    background-color: var(--card-background);
     padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); /* Shadow nhẹ, hiện đại */
+    flex-wrap: wrap;
 }
 
-.card h2 {
-    margin-top: 0;
-    border-bottom: 2px solid #eee;
+.card {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+    padding: 30px;
+    min-width: 350px;
+    flex-grow: 1;
+    max-width: 600px;
+    /* Sẽ được ghi đè bên dưới */
+}
+
+/* ĐIỀU CHỈNH TỶ LỆ CỘT */
+.update-match-section {
+    flex-basis: 25%;
+    /* Giảm từ 30% xuống 25% */
+    max-width: 350px;
+    /* Giảm chiều rộng tối đa */
+}
+
+.ranking-section {
+    flex-basis: 70%;
+    /* Tăng từ 60% lên 70% */
+    min-width: 600px;
+    /* Tăng chiều rộng tối thiểu */
+    max-width: 800px;
+    /* Tăng chiều rộng tối đa */
+}
+
+/* KẾT THÚC ĐIỀU CHỈNH */
+
+h2 {
+    border-bottom: 2px solid #007bff;
     padding-bottom: 10px;
-    font-size: 1.5em;
-    color: var(--primary-color);
+    margin-bottom: 25px;
+    color: #007bff;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
-/* Input Groups */
 .input-group {
-    margin-bottom: 15px;
+    margin-bottom: 18px;
 }
 
-.input-group label {
+label {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 6px;
     font-weight: 600;
+    color: #555;
 }
 
-.input-group input {
+input[type="text"],
+input[type="number"] {
     width: 100%;
     padding: 12px;
     border: 1px solid #ddd;
-    border-radius: 8px;
+    border-radius: 6px;
     box-sizing: border-box;
-    font-size: 1em;
-    transition: border-color 0.3s, box-shadow 0.3s;
+    transition: border-color 0.3s;
 }
 
-.input-group input:focus {
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+input[type="text"]:focus,
+input[type="number"]:focus {
+    border-color: #007bff;
     outline: none;
 }
 
+/* Nút bấm */
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s, transform 0.1s;
+    margin-right: 10px;
+}
+
+.btn:active {
+    transform: scale(0.98);
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.btn-secondary {
+    background-color: #28a745;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #1e7e34;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+}
+
+.btn-sm {
+    padding: 5px 10px;
+    font-size: 0.85em;
+    margin-left: 5px;
+    border-radius: 4px;
+}
+
+/* Tỷ số */
 .score-inputs {
     display: flex;
     align-items: center;
@@ -104,130 +149,93 @@ main {
 .score-inputs input {
     width: 50px;
     text-align: center;
-    margin: 0 10px;
+    margin: 0 5px;
 }
 
-/* Buttons */
-.btn {
-    padding: 12px 25px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 1em;
-    font-weight: 600;
-    margin-right: 10px;
-    transition: opacity 0.3s, background-color 0.3s;
+.score-inputs span {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #555;
 }
 
-.btn:hover {
-    opacity: 0.9;
+/* Thông báo */
+#messageBox {
+    display: none;
 }
 
-.btn-primary {
-    background-color: var(--primary-color);
-    color: white;
-}
-
-.btn-secondary {
-    background-color: var(--secondary-color);
-    color: white;
-}
-
-.btn-danger {
-    background-color: var(--danger-color);
-    color: white;
-}
-
-.edit-btn, .delete-btn {
-    padding: 8px 12px;
-    font-size: 0.9em;
-    margin-left: 5px;
-}
-
-.delete-btn {
-    background-color: var(--danger-color);
-    color: white;
-}
-
-/* Ranking Table */
-.ranking-table-container {
-    overflow-x: auto;
-}
-
-table {
-    width: 100%;
-    border-collapse: separate; /* Dùng separate để làm tròn góc */
-    border-spacing: 0;
-    margin-top: 25px;
-    border-radius: 10px;
-    overflow: hidden; /* Cần thiết để làm tròn góc */
-}
-
-table thead th:first-child { border-top-left-radius: 10px; }
-table thead th:last-child { border-top-right-radius: 10px; }
-
-table th, table td {
-    padding: 15px;
-    text-align: left;
-}
-
-table th {
-    background-color: var(--primary-color);
-    color: white;
-    font-weight: 700;
-    text-transform: uppercase;
-    font-size: 0.85em;
-}
-
-table tbody tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
-
-table tbody tr:hover {
-    background-color: #f0f0f0;
-    transition: background-color 0.2s;
-}
-
-/* Message Box */
 .message-box {
     padding: 15px;
-    border-radius: 8px;
+    border-radius: 6px;
     margin-top: 20px;
     text-align: center;
     font-weight: bold;
-    display: none; 
-}
-
-.message-box.success {
-    background-color: #d4edda;
-    color: var(--success-color);
-    border: 1px solid #c3e6cb;
+    width: 100%;
 }
 
 .message-box.error {
     background-color: #f8d7da;
-    color: var(--danger-color);
+    color: #721c24;
     border: 1px solid #f5c6cb;
 }
 
-/* Footer */
+.message-box.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+/* Bảng */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 0.95em;
+}
+
+th,
+td {
+    padding: 12px 15px;
+    border: 1px solid #eee;
+    text-align: left;
+}
+
+th {
+    background-color: #007bff;
+    color: white;
+    font-weight: 600;
+}
+
+tr:nth-child(even) {
+    background-color: #f8f8f8;
+}
+
+/* KHẮC PHỤC LỖI NÚT SỬA/XÓA BỊ XUỐNG HÀNG */
+.ranking-table-container td:last-child {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 8px 15px;
+}
+
+
 footer {
     text-align: center;
     padding: 20px;
-    margin-top: 40px;
-    color: #666;
-    font-size: 0.9em;
-    background-color: var(--card-background);
-    border-top: 1px solid #eee;
+    margin-top: 30px;
+    color: #999;
+    font-size: 0.8em;
 }
 
-/* Media Queries cho Responsive */
-@media (max-width: 992px) {
+/* Responsive */
+@media (max-width: 900px) {
     main {
-        grid-template-columns: 1fr; /* Xếp chồng trên màn hình nhỏ */
+        flex-direction: column;
+        align-items: center;
     }
 
-    .ranking-section, .update-match-section {
-        grid-column: 1 / 2; /* Đảm bảo cả hai chiếm hết 1 cột */
+    .card {
+        max-width: 90%;
+        min-width: unset;
+        flex-basis: auto;
     }
 }

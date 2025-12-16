@@ -21,7 +21,7 @@ const corsOptions = {
     // Nếu bạn muốn giới hạn, thay '*' bằng 'http://127.0.0.1:5500'
     origin: '*', 
     // Cho phép các phương thức HTTP cần thiết cho CRUD
-    methods: ['GET', 'POST', 'PUT', 'DELETE'], 
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], 
     // Cho phép các headers cần thiết
     allowedHeaders: ['Content-Type', 'Authorization'],
 };
